@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Barra de búsqueda -->
+<div class="mt-4">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <form class="row align-items-center">
+                    <div class="col mb-3 mb-lg-0">
+                        <input type="search" class="form-control" placeholder="Buscar..."
+                               aria-label="Search" name="q">
+                    </div>
+                    <!-- Selector de categorías -->
+                    <div class="col">
+                        <select class="form-select" name="categoria">
+                            <option value="">Filtro por categorías</option>
+                            {% for categoria in categorias %}
+                            <option value="{{ categoria.categoria }}">{{ categoria.categoria }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-success">Buscar</button>
+                    </div>
+                    <!-- Botón de aplicar filtro -->
+                    <div class="col-auto">
+                        <a href="{% url 'product' %}" class="btn btn-secondary">Limpiar búsqueda</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-xl">
+    <div id="menu" class="row justify-content-center">
+        {% for product in page_obj %}
+        <div class="col-md-4 mb-4 product"> <!-- Utilizamos columnas de tamaño medio y un margen inferior -->
+            <div class="card"> <!-- Utilizamos la clase card de Bootstrap -->
+                <div class="text-center">
+                    {% if product.imagen %}
+                    <img src="{{ product.imagen.url }}" class="card-img-top" alt="..." style="width: 300px; height: 230px;">
+                    {% else %}
+                    <img src='{% static "images/IMAGEN-NO-DISPONIBLE.jpg"%}' class="card-img-top" alt="..."
+                         style="width: 300px; height: 230px;">
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title"><b>{{ product.descripcion }}</b></h5>
+                    <p class="card-text">{{ product.articulo }}</p>
+                    <p class="card-text"><b>Precio: </b>${{ product.precio }}</p>
+                    <hr>
+                    <div class="text-center">
+                        <a href="{% url 'add' product.id %}" class="btn btn-primary custom-btn mb-2"
+                           style="line-height: 35px;">Agregar al carro</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Agrega la navegación de paginación -->
+{% if page_obj.has_other_pages %}
+<div class="pagination justify-content-center mt-4">
+    <ul class="pagination">
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page=1" style="color: black;">&laquo; Primero</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" style="color: black;">Anterior</a>
+        </li>
+        {% endif %}
+        <li class="page-item active">
+                <span class="page-link">
+                    Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+                </span>
+        </li>
+        {% if page_obj.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}" style="color: black;">Siguiente</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" style="color: black;">Último
+                &raquo;</a>
+        </li>
+        {% endif %}
+    </ul>
+</div>
+{% endif %}
+
+{% endblock %}

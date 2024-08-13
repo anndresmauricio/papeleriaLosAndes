@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="alert alert-light" role="alert">
+        <div class="justified-text" style="max-width: 1100px; margin: 0 auto; padding: 0 20px;">
+            <h2 class="text-center" style="color: #023e8a;"><strong>Registre sus datos</strong></h2>
+            <hr>
+            <div class="contact-form-container">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Nombres</label>
+                        {{ form.first_name }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Apellidos</label>
+                        {{ form.last_name }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Ciudad</label>
+                        {{ form.city }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Dirección</label>
+                        {{ form.address }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Correo Electrónico</label>
+                        {{ form.email }}
+                    </div>
+                    <button type="submit" class="btn btn-primary custom-btn">Realizar Compra</button>
+                </form>
+            </div>
+            <div class="text-center">
+                <!-- Aquí va el botón de checkout de BOLD -->
+                <div id="bold-checkout-button-container"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Integrar el script de BOLD -->
+<script src="https://checkout.bold.co/library/boldPaymentButton.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Configuración e inicialización del botón de checkout de BOLD
+        BOLDCheckoutButton.init({
+            container: '#bold-checkout-button-container',
+            'data-bold-button': 'Dark-M',
+            'data-order-id': '{{ order_id }}',
+            'data-currency': 'COP',
+            'data-amount': '{{ amount }}',
+            'data-api-key': '{{ api_key }}',
+            'data-integrity-signature': '{{ integrity_signature }}',
+            'data-redirection-url': '{{ redirection_url }}'
+        });
+    });
+</script>
+
+<style>
+    .contact-form-container form input,
+    .contact-form-container form textarea,
+    .contact-form-container form select {
+        padding: 10px;
+        border: 1px solid #dddddd;
+        border-radius: 4px;
+        font-size: 16px;
+        width: 100%;
+        margin-bottom: 15px; /* Añadir margen inferior para separar los campos */
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="mt-4">
+    <div class="container vendedor-container">
+        <h2>Actualizar Producto</h2>
+        <div class="card card-body">
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-success">Actualizar Producto</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

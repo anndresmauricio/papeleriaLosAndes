@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="mt-4">
+    <div class="container vendedor-container">
+
+        <details class="mb-4">
+            <summary class="summary-content">Crear nuevo producto</summary>
+            <div class="card card-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-success">Crear Producto</button>
+                </form>
+            </div>
+        </details>
+
+        <hr>
+
+        <h3>Productos</h3>
+        <!-- Formulario de búsqueda -->
+        <form method="GET">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Buscar por descripción" name="q" value="{{ search }}">
+                <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+            </div>
+        </form>
+        <!-- Lista de productos en una tabla -->
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead>
+                <tr class="text-center">
+                    <th>Item</th>
+                    <th>Artículo</th>
+                    <th>Descripción</th>
+                    <th>Categoría</th>
+                    <th>Costo</th>
+                    <th>Precio</th>
+                    <th>Ubicación</th>
+                    <th>Cantidad</th>
+                    <th>Medida</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for product in products %}
+                <tr>
+                    <td>{{ product.item }}</td>
+                    <td>{{ product.articulo }}</td>
+                    <td>{{ product.descripcion }}</td>
+                    <td>{{ product.categoria }}</td>
+                    <td>{{ product.costo }}</td>
+                    <td>{{ product.precio }}</td>
+                    <td>{{ product.ubicacion }}</td>
+                    <td>{{ product.cantidad }}</td>
+                    <td>{{ product.medida }}</td>
+                    <td class="text-center">
+                        <!-- Formulario para actualizar un producto existente -->
+                        <form method="POST" action="{% url 'actualizar' product.id %}" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" name="actualizar" class="btn btn-warning btn-sm">Actualizar</button>
+                        </form>
+                        <!-- Formulario para eliminar un producto existente -->
+                        <form method="POST" class="d-inline">
+                            {% csrf_token %}
+                            <input type="hidden" name="product_id" value="{{ product.id }}">
+                            <button type="submit" name="delete" class="btn btn-danger btn-sm">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

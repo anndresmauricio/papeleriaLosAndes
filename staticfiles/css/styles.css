@@ -1,0 +1,60 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #f4f4f4;
+}
+
+#header {
+    background-color: #333; /* Color de fondo de la barra de inicio */
+    color: #fff; /* Color de texto de la barra de inicio */
+    padding: 10px 0; /* Espaciado interno de la barra de inicio */
+    text-align: center; /* Alineación de texto de la barra de inicio */
+}
+
+#menu {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px; /* Espaciado entre la barra de inicio y los productos */
+}
+
+.product {
+    width: 250px;
+    margin: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 50px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.product:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.titulo {
+    text-align: center;
+    font-size: 40px;
+    padding-top: 50px;
+}
+
+.carousel-image {
+    font-weight: 400;
+    font-size: 16px;
+    display: inline-block;
+    padding: 10px 30px;
+    border-radius: 0;
+    border: 2px;
+}
+
+.carousel-inner img {
+    max-height: 600px; /* Altura máxima de las imágenes */
+    object-fit: cover; /* Ajustar la imagen al contenedor sin deformarla */
+    border-radius: 1px; /* Bordes redondeados */
+}
+

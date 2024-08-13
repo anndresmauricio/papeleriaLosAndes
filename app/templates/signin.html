@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load socialaccount %}
+
+{% block content %}
+<div class="signin-container">
+    <h1 class="text-center" style="color: #023e8a;"><strong>Iniciar Sesión</strong></h1>
+    {% if error %}
+    <p class="error-message">{{ error }}</p>
+    {% endif %}
+    <form action="/signin/" method="POST" class="signin-form">
+        {% csrf_token %}
+        <div class="form-group" style="margin-top: 10px;">
+            <label for="id_username" class="col-form-label mr-2">Usuario:</label>
+            <input type="text" id="id_username" name="username" class="form-control">
+        </div>
+        <div class="form-group" style="margin-top: 10px;">
+            <label for="id_password" class="col-form-label mr-2">Contraseña:</label>
+            <input type="password" id="id_password" name="password" class="form-control">
+        </div>
+        <div style="margin-top: 20px;" class="boton-signin">
+            <button type="submit" class="btn btn-primary btn-block custom-btn">Ingresar</button>
+        </div>
+    </form>
+
+    <div class="social-auth-links text-center">
+        <a href="{% provider_login_url 'google' %}" class="btn btn-block btn-google">
+            <i class="fab fa-google fa-lg"></i>
+        </a>
+    </div>
+</div>
+{% endblock %}
