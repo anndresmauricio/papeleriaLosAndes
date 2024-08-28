@@ -1,3 +1,7 @@
 venv
 __pycache__
-settings.py
+/firstapp/firstapp/settings.py
+/firstapp/settings.py
+/settings.py
+db.sqlite3
+.idea/

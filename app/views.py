@@ -3,7 +3,6 @@ import hmac
 import uuid
 from random import sample
 import re
-import stripe
 from django.db.models import Count
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -15,8 +14,6 @@ from .forms import ProductForm, CheckoutForm
 from .models import Product
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
-from django.urls import reverse
-from decimal import Decimal
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from django.contrib import messages
@@ -24,8 +21,6 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import user_passes_test
 from .forms import ContactForm
 from django.core.mail import send_mail
-
-stripe.api_key = settings.STRIPE_SECRET_KEY
 
 def is_vendedor(request):
     """

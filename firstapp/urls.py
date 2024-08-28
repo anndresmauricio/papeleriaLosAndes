@@ -35,18 +35,18 @@ urlpatterns = [
     path('help/', views.ayuda, name='help'),
     path('accounts/', include('allauth.urls')),
     path('accounts/profile/', views.index, name='index'),
-    path('paypal/', include("paypal.standard.ipn.urls")),
     path('payment-success/', views.payment_successful, name='payment-success'),
     path('crear-vendedor/', views.crear_vendedor, name='crear-vendedor'),
     path('vendedor_dashboard/', views.vendedor_dashboard, name='vendedor_dashboard'),
     path('thank-you/', views.contact_thanks, name='thank_you'),
     path('actualizar_producto/<int:product_id>/', views.actualizar_producto, name='actualizar'),
-    path('nosotros/', views.nosotros_view, name='nosotros'),
     path('us/', views.nosotros_view, name='us'),
     path('operation/', views.operacion_view, name='operation'),
     path('brand/', views.marcas_view, name='brand'),
     path('contact/', views.contactos_view, name='contact'),
     path('process-payment/', views.process_payment, name='process_payment'),
 ]
+
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -11,10 +11,13 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 import os
 from pathlib import Path
+import dj_database_url
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+dotenv_path = BASE_DIR / '.env'
+load_dotenv(dotenv_path=dotenv_path)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -43,7 +46,6 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'app',
-    'paypal.standard.ipn',
 ]
 
 MIDDLEWARE = [
@@ -62,6 +64,8 @@ MIDDLEWARE = [
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'APP': {
+            'client_id': '400201799049-jkp64eh2alhscin53hb3sok87e981jc0.apps.googleusercontent.com',
+            'secret': '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',
         }
     }
 }
@@ -98,12 +102,13 @@ WSGI_APPLICATION = 'firstapp.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 # Configuración de la base de datos
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+DATABASE_URL = os.getenv('DATABASE_URL')
+if DATABASE_URL:
+    DATABASES = {
+        'default': dj_database_url.config(default=DATABASE_URL)
     }
-}
+else:
+    raise ValueError("No DATABASE_URL found. Please set the DATABASE_URL environment variable.")
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -144,21 +149,23 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
 
 # Configuración para producción de archivos estáticos
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/products')
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'app/static')
 ]
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/products')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 
 STRIPE_PUBLIC_KEY = "pk_test_51PBmC2CYn8bFti8vUuJVImXgQIcYdyLPMl5BcmShSwUGdgJMzWIAixamMvPtphnbLOLaXfwFhW4zn7tOr4dpJVCZ00lMG7S2TC"
 STRIPE_SECRET_KEY = "sk_test_51PBmC2CYn8bFti8vxSohFFcrmFhoEHrxIz6Ekh7Xy9e0xLVQXpcRMaStYgcseckcrmMqZO2ZMmlO1SHcqZh4GO7c00IVnTW3gn"
+
 
 BOLD_API_KEY = 'uIMmwltOE-o9dbWlMzsM4LMVz-7gTZek5-7APblTovo'
 BOLD_SECRET_KEY = 'VDDtLHOGpjoxVOK3ql1BKw'
@@ -170,6 +177,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'examplepapeleria@hotmail.com'
 EMAIL_HOST_PASSWORD = 'triqlbuvlqltmdiw'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
