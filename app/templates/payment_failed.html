@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="alert alert-light" role="alert">
+        <div class="text-center">
+            <h1>Se ha producido un error a la hora de realizar el pago</h1>
+            <hr>
+            <div style="margin-top: 20px; line-height: 35px;" class="btn btn-success btn-block custom-btn">
+                <a href="/cart" class="nav-link px-2 text-white">Volver al carro</a>
+            </div>
+            <div style="margin-top: 20px; line-height: 35px;" class="btn btn-primary btn-block custom-btn">
+                <a href="/" class="nav-link px-2 text-white">Volver al inicio</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -30,6 +30,8 @@ class ContactForm(forms.Form):
 class CheckoutForm(forms.Form):
     first_name = forms.CharField(label='Nombres', max_length=100)
     last_name = forms.CharField(label='Apellidos', max_length=100)
+    cc = forms.CharField(label='Documento de identidad', max_length=100)
     city = forms.CharField(label='Ciudad', max_length=100)
     address = forms.CharField(label='Dirección', max_length=255)
     email = forms.EmailField(label='Correo electrónico')
+    telephone = forms.CharField(label='Teléfono', max_length=15)

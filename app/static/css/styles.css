@@ -140,16 +140,16 @@ body {
     height: 50px;
 }
 
-.btn-facebook {
-    background-color: #3B5998; /* Color azul característico de Facebook */
+.btn-whatsapp {
+    background-color:  #25D366;
     color: white;
-    width: 200px;
+    width: 100px;
     height: 50px;
 }
 
     /* Estilos adicionales para los iconos */
 .btn-google i,
-.btn-facebook i {
+.btn-whatsapp i{
     color: white; /* Color del icono blanco */
     display: block;
     margin-bottom: 10px;

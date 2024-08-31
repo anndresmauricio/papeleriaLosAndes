@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header text-center">
+            <h2 class="card-title">Confirmación de Pedido</h2>
+        </div>
+        <div class="card-body">
+            <div>
+                <p class="card-text">Gracias por su información. Por favor, proceda con el pago para completar su pedido.</p>
+                <!-- Aquí va el botón de checkout de BOLD -->
+                <script
+                        data-bold-button="Black-M"
+                        data-order-id="{{ order_id }}"
+                        data-currency="COP"
+                        data-amount="{{ amount }}"
+                        data-api-key="{{ api_key }}"
+                        data-integrity-signature="{{ integrity_signature }}"
+                        data-redirection-url="{{ redirection_url }}"
+                        src="https://checkout.bold.co/library/boldPaymentButton.js"
+                ></script>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

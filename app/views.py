@@ -1,13 +1,10 @@
-import hashlib
-import hmac
-import uuid
 from random import sample
 import re
 from django.db.models import Count
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
-from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth import login, logout, authenticate, get_backends
 from django.db import IntegrityError
 from .carrito import Carrito
 from .forms import ProductForm, CheckoutForm
@@ -15,12 +12,17 @@ from .models import Product
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
-from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import user_passes_test
 from .forms import ContactForm
 from django.core.mail import send_mail
+import hashlib
+from django.urls import reverse
+import random
+from django.utils.timezone import now
+from firstapp import settings
+
 
 def is_vendedor(request):
     """
@@ -45,11 +47,12 @@ def signup(request):
         })
     elif request.method == 'POST':
         username = request.POST.get('username')
+        email = request.POST.get('email')
         password1 = request.POST.get('password1')
         password2 = request.POST.get('password2')
 
-        # Verificar si el campo de usuario está vacío
-        if not username:
+        # Verificar si el campo de usuario o email están vacío
+        if not username or not email:
             return render(request, 'signup.html', {
                 'form': UserCreationForm,
                 "error": 'El campo de usuario no puede estar vacío'
@@ -72,16 +75,39 @@ def signup(request):
 
         # registrar
         try:
-            user = User.objects.create_user(username=username, password=password1)
-            user.backend = 'django.contrib.auth.backends.ModelBackend'
+            user = User.objects.create_user(username=username, password=password1, email=email)
+            user.is_active = False  # Desactiva la cuenta hasta que se confirme
             user.save()
-            login(request, user)
-            return redirect('index')
+
+            send_confirmation_email(request, user)
+            return redirect('confirm')
         except IntegrityError:
             return render(request, 'signup.html', {
                 'form': UserCreationForm,
                 "error": 'Usuario ya existe'
             })
+
+
+def comfirm_page(request):
+    return render(request, 'confirm.html')
+
+
+def send_confirmation_email(request, user):
+    subject = 'Confirma tu cuenta'
+    message = f'Por favor, confirma tu cuenta haciendo clic en el siguiente enlace: http://{request.get_host()}/confirm-email/{user.id}/'
+    send_mail(subject, message, settings.EMAIL_HOST_USER, [user.email], fail_silently=False)
+
+
+def confirm_email(request, user_id):
+    user = get_object_or_404(User, pk=user_id)
+    user.is_active = True
+    user.save()
+    backend = get_backends()[0]
+    user.backend = f"{backend.__module__}.{backend.__class__.__name__}"
+
+    login(request, user, backend=user.backend)
+
+    return redirect('index')
 
 
 def signout(request):
@@ -200,46 +226,30 @@ def process_payment(request):
     amount = int(acumulado)
 
     # Generar un identificador único para el pedido usando UUID
-    order_id = str(uuid.uuid4())
+    order_id = f"ORD{now().strftime('%Y%m%d')}{random.randint(100, 999)}"
 
     # Llave secreta de integración
     secret_key = settings.BOLD_SECRET_KEY
 
+    badge = 'COP'
     # Generar el hash de integridad
-    data_to_hash = f'{order_id}{amount}COP{secret_key}'
-    integrity_signature = hmac.new(
-        secret_key.encode('utf-8'),
-        data_to_hash.encode('utf-8'),
-        hashlib.sha256
-    ).hexdigest()
+    data_to_hash = f'{order_id}{amount}{badge}{secret_key}'
+    m = hashlib.sha256()
+    m.update(data_to_hash.encode('utf-8'))
+    integrity_signature = m.hexdigest()
 
     # URL de redirección después del pago
-    redirection_url = request.build_absolute_uri('/payment-success/')
+    redirection_url = request.build_absolute_uri('/payment-success')
 
     if request.method == 'POST':
         form = CheckoutForm(request.POST)
         if form.is_valid():
-            first_name = form.cleaned_data['first_name']
-            last_name = form.cleaned_data['last_name']
-            city = form.cleaned_data['city']
-            address = form.cleaned_data['address']
-            email = form.cleaned_data['email']
-
-            # Obtén los productos del carrito
-            productos = carrito.listado_productos()
-
-            # Construye el mensaje del correo
-            productos_list = "\n".join([f"{item['name']} \n Cantidad: {item['quantity']}" for item in productos])
-            message = f"Nombres: {first_name}\nApellidos: {last_name}\nCiudad: {city}\nDirección: {address}\nCorreo electrónico: {email}\n\nProductos:\n{productos_list}"
-
-            send_mail(
-                f'Nuevo pedido  - ID: {order_id}',  # Asunto del correo
-                message,  # Cuerpo del correo
-                settings.EMAIL_HOST_USER,  # Desde
-                [settings.EMAIL_HOST_USER],  # Para (tu propio correo)
-                fail_silently=False,
-            )
-            return redirect('thank_you')  # Redirige a una página de éxito
+            # Guardar datos del formulario en la sesión
+            request.session['form_data'] = form.cleaned_data
+            request.session['order_id'] = order_id
+            request.session['amount'] = amount
+            request.session['integrity_signature'] = integrity_signature
+            return redirect('thank_you_payment')
     else:
         form = CheckoutForm()
 
@@ -255,8 +265,76 @@ def process_payment(request):
 
     return render(request, 'payment.html', context)
 
+
+@login_required(login_url='signin')
+def contact_thanks_p(request):
+    order_id = request.session.get('order_id')
+    amount = request.session.get('amount')
+    integrity_signature = request.session.get('integrity_signature')
+
+    context = {
+        'order_id': order_id,
+        'currency': 'COP',
+        'amount': amount,
+        'api_key': settings.BOLD_API_KEY,
+        'integrity_signature': integrity_signature,
+        'redirection_url': request.build_absolute_uri('/payment-success')
+    }
+
+    return render(request, 'thank_you_payment.html', context)
+
+
+@login_required(login_url='signin')
 def payment_successful(request):
-    return render(request, 'payment-success.html')
+    tx_status = request.GET.get('bold-tx-status')
+
+    if tx_status == 'approved':
+        # Recuperar datos del formulario desde la sesión
+        form_data = request.session.get('form_data')
+        order_id = request.session.get('order_id')
+
+        if form_data:
+            first_name = form_data['first_name']
+            last_name = form_data['last_name']
+            cc = form_data['cc']
+            city = form_data['city']
+            address = form_data['address']
+            email = form_data['email']
+            telephone = form_data['telephone']
+
+            # Enviar correo al cliente
+            customer_message = f"Gracias por tu compra, {first_name} {last_name}.\nTu pedido ha sido recibido y está en proceso."
+            send_mail(
+                'Confirmación de Compra',
+                customer_message,
+                settings.EMAIL_HOST_USER,
+                [email],
+                fail_silently=False,
+            )
+
+            # Enviar correo al vendedor
+            productos = Carrito(request).listado_productos()
+            productos_list = "\n".join([f"{item['name']} \n Cantidad: {item['quantity']}" for item in productos])
+            seller_message = f"Nombres: {first_name}\nApellidos: {last_name}\nDocumento de identidad: {cc}\nCiudad: {city}\nDirección: {address}\nCorreo electrónico: {email}\nTeléfono: {telephone}\n\nProductos:\n{productos_list}"
+
+            send_mail(
+                f'Nuevo pedido  - ID: {order_id}',
+                seller_message,
+                settings.EMAIL_HOST_USER,
+                [settings.EMAIL_HOST_USER],
+                fail_silently=False,
+            )
+
+            carrito = Carrito(request)
+            carrito.limpiar()
+
+            return render(request, 'payment-success.html')
+    else:
+        return redirect(reverse('payment_failed'))
+
+
+def payment_failed(request):
+    return render(request, 'payment_failed.html')
 
 
 @user_passes_test(lambda u: u.is_superuser)
