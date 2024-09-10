@@ -41,7 +41,7 @@
             <div class="card"> <!-- Utilizamos la clase card de Bootstrap -->
                 <div class="text-center">
                     {% if product.imagen %}
-                    <img src="{{ product.imagen.url }}" class="card-img-top" alt="..." style="width: 300px; height: 230px;">
+                    <img src="{{ product.imagen.url }}" class="card-img-top" alt="..." style="width: 300px; height: 230px;  object-fit: cover;">
                     {% else %}
                     <img src='{% static "images/IMAGEN-NO-DISPONIBLE.jpg"%}' class="card-img-top" alt="..."
                          style="width: 300px; height: 230px;">

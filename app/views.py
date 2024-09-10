@@ -162,6 +162,14 @@ def agregar_producto(request, producto_id):
     carrito.agregar(producto)
     return redirect("cart")
 
+@login_required(login_url='cart')
+def actualizar_cantidad(request, producto_id):
+    if request.method == 'POST':
+        nueva_cantidad = int(request.POST.get('cantidad'))
+        carrito = Carrito(request)
+        producto = Product.objects.get(id=producto_id)
+        carrito.actualizar_cantidad(producto, nueva_cantidad)
+    return redirect("cart")
 
 def eliminar_producto(request, producto_id):
     carrito = Carrito(request)
@@ -223,6 +231,14 @@ def contact_thanks(request):
 def process_payment(request):
     carrito = Carrito(request)
     acumulado = carrito.get_total_acumulado()
+
+    MIN_MONTO = 400000
+    MAX_MONTO = 3000000
+
+    if acumulado < MIN_MONTO or acumulado > MAX_MONTO:
+        messages.error(request, f"El monto total debe estar entre $ 400.000 - $ 3.000.000 de pesos Colombianos.")
+        return redirect('cart')
+
     amount = int(acumulado)
 
     # Generar un identificador único para el pedido usando UUID

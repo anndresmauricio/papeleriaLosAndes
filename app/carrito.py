@@ -85,3 +85,14 @@ class Carrito:
             }
             productos_en_carrito.append(producto_info)
         return productos_en_carrito
+
+    def actualizar_cantidad(self, producto, cantidad):
+        id = str(producto.id)
+        if id in self.carrito.keys():
+            precio_sin_iva = producto.precio
+            precio_con_iva = precio_sin_iva * 1.19
+            diferencia_cantidad = cantidad - self.carrito[id]['cantidad']
+            self.carrito[id]['cantidad'] = cantidad
+            self.carrito[id]['acumulado'] += diferencia_cantidad * precio_con_iva
+            self.carrito[id]['precio'] += diferencia_cantidad * precio_sin_iva
+            self.guardar_carrito()

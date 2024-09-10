@@ -55,9 +55,9 @@
             <div class="card">
                 <div class="text-center">
                     {% if product.imagen %}
-                    <img src="{{ product.imagen.url }}" class="card-img-top product-image" alt="{{ product.descripcion }}">
+                    <img src="{{ product.imagen.url }}" class="card-img-top product-image" alt="{{ product.descripcion }}" style="width: 300px; height: 230px; object-fit: cover;">
                     {% else %}
-                    <img src='{% static "images/IMAGEN-NO-DISPONIBLE.jpg" %}' class="card-img-top product-image" alt="Imagen no disponible">
+                    <img src='{% static "images/IMAGEN-NO-DISPONIBLE.jpg" %}' class="card-img-top product-image" alt="Imagen no disponible" style="width: 300px; height: 230px; object-fit: cover;">
                     {% endif %}
                 </div>
                 <div class="card-body">

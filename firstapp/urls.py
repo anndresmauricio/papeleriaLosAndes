@@ -34,6 +34,7 @@ urlpatterns = [
     path('cart/eliminar/<int:producto_id>/', views.eliminar_producto, name="delete"),
     path('cart/restar/<int:producto_id>/', views.restar_producto, name="rest"),
     path('cart/limpiar/', views.limpiar_carrito, name="clean"),
+    path('actualizar/<int:producto_id>/', views.actualizar_cantidad, name='update_quantity'),
     path('help/', views.ayuda, name='help'),
     path('accounts/', include('allauth.urls')),
     path('accounts/profile/', views.index, name='index'),
