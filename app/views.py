@@ -236,7 +236,7 @@ def process_payment(request):
     MAX_MONTO = 3000000
 
     if acumulado < MIN_MONTO or acumulado > MAX_MONTO:
-        messages.error(request, f"El monto total debe estar entre $ 400.000 - $ 3.000.000 de pesos Colombianos.")
+        messages.error(request, f"El monto total debe estar entre $ 400.000 - $ 3.000.000 de pesos Colombianos para realizar la compra.")
         return redirect('cart')
 
     amount = int(acumulado)

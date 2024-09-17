@@ -17,6 +17,9 @@
             <label for="id_password" class="col-form-label mr-2">Contraseña:</label>
             <input type="password" id="id_password" name="password" class="form-control">
         </div>
+        <div style="margin-top: 20px; font-size: 0.9em;">
+            <p><a href="{% url 'password_reset' %}">¿Olvidaste tu contraseña?</a></p>
+        </div>
         <div style="margin-top: 20px;" class="boton-signin">
             <button type="submit" class="btn btn-primary btn-block custom-btn">Ingresar</button>
         </div>

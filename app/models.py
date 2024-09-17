@@ -19,7 +19,7 @@ class Product(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
-        return self.articulo + ' - ' + self.descripcion
+        return self.descripcion + ' - ' + self.articulo
 
 
 class VendedorGroup(Group):
