@@ -178,6 +178,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'examplepapeleria@hotmail.com'
 EMAIL_HOST_PASSWORD = 'triqlbuvlqltmdiw'
 
+DEFAULT_FROM_EMAIL = 'examplepapeleria@hotmail.com'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
