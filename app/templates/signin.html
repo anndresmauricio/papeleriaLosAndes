@@ -10,8 +10,8 @@
     <form action="/signin/" method="POST" class="signin-form">
         {% csrf_token %}
         <div class="form-group" style="margin-top: 10px;">
-            <label for="id_username" class="col-form-label mr-2">Usuario:</label>
-            <input type="text" id="id_username" name="username" class="form-control">
+            <label for="id_username_or_email" class="col-form-label mr-2">Usuario o Correo Electrónico:</label>
+            <input type="text" id="id_username_or_email" name="username_or_email" class="form-control">
         </div>
         <div class="form-group" style="margin-top: 10px;">
             <label for="id_password" class="col-form-label mr-2">Contraseña:</label>

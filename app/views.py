@@ -22,6 +22,7 @@ from django.urls import reverse
 import random
 from django.utils.timezone import now
 from firstapp import settings
+from .forms import CustomAuthenticationForm
 
 
 def is_vendedor(request):
@@ -121,15 +122,32 @@ def signin(request):
             'form': AuthenticationForm
         })
     else:
-        user = authenticate(request, username=request.POST['username'], password=request.POST['password'])
-        if user is None:
-            return render(request, 'signin.html', {
-                'form': AuthenticationForm,
-                'error': 'El usuario o la contraseña no es la correcta'
-            })
+        form = CustomAuthenticationForm(request.POST)
+        if form.is_valid():
+            username_or_email = form.cleaned_data['username_or_email']
+            password = form.cleaned_data['password']
+
+            try:
+                user = User.objects.get(email=username_or_email)
+                username = user.username
+            except User.DoesNotExist:
+                username = username_or_email
+
+            user = authenticate(request, username=username, password=password)
+
+            if user is None:
+                return render(request, 'signin.html', {
+                    'form': form,
+                    'error': 'El usuario o la contraseña no es la correcta'
+                })
+            else:
+                login(request, user)
+                return redirect('index')
         else:
-            login(request, user)
-            return redirect('index')
+            return render(request, 'signin.html', {
+                'form': form,
+                'error': 'Por favor, ingresa información válida'
+            })
 
 
 def product(request):
@@ -384,12 +402,14 @@ def vendedor_dashboard(request):
 
     q = request.GET.get('q')
 
-    # Leer (Read): Obtener todos los productos de la base de datos
-    products = Product.objects.all()
+    products = Product.objects.all().order_by('articulo')
     if q:
         products = products.filter(articulo__icontains=q)
 
-    # Crear (Create): Procesar el formulario de creación de un nuevo producto
+    paginator = Paginator(products, 15)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     if request.method == 'POST':
         form = ProductForm(request.POST)
         if form.is_valid():
@@ -398,7 +418,6 @@ def vendedor_dashboard(request):
     else:
         form = ProductForm()
 
-    # Eliminar (Delete): Eliminar un producto existente
     if request.method == 'POST' and 'delete' in request.POST:
         product_id = request.POST.get('product_id')
         product = get_object_or_404(Product, id=product_id)
@@ -407,6 +426,7 @@ def vendedor_dashboard(request):
 
 
     context = {
+        'page_obj': page_obj,
         'products': products,
         'form': form,
         'search': q,

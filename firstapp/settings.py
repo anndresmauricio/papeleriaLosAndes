@@ -163,12 +163,8 @@ STATICFILES_DIRS = [
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
-STRIPE_PUBLIC_KEY = "pk_test_51PBmC2CYn8bFti8vUuJVImXgQIcYdyLPMl5BcmShSwUGdgJMzWIAixamMvPtphnbLOLaXfwFhW4zn7tOr4dpJVCZ00lMG7S2TC"
-STRIPE_SECRET_KEY = "sk_test_51PBmC2CYn8bFti8vxSohFFcrmFhoEHrxIz6Ekh7Xy9e0xLVQXpcRMaStYgcseckcrmMqZO2ZMmlO1SHcqZh4GO7c00IVnTW3gn"
-
-
-BOLD_API_KEY = 'uIMmwltOE-o9dbWlMzsM4LMVz-7gTZek5-7APblTovo'
-BOLD_SECRET_KEY = 'VDDtLHOGpjoxVOK3ql1BKw'
+BOLD_API_KEY = 'UN55Mxa_qGqEYXYihCtN6gpLLd5QtV3S4SCGuzabHYY'
+BOLD_SECRET_KEY = 'QxdvHLMGIM7ExM5AeMiD9w'
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

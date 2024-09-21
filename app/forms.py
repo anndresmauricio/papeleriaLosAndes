@@ -35,3 +35,8 @@ class CheckoutForm(forms.Form):
     address = forms.CharField(label='Dirección', max_length=255)
     email = forms.EmailField(label='Correo electrónico')
     telephone = forms.CharField(label='Teléfono', max_length=15)
+
+
+class CustomAuthenticationForm(forms.Form):
+    username_or_email = forms.CharField(label="Usuario o Correo Electrónico", max_length=254)
+    password = forms.CharField(label="Contraseña", widget=forms.PasswordInput)
