@@ -250,7 +250,7 @@ def process_payment(request):
     carrito = Carrito(request)
     acumulado = carrito.get_total_acumulado()
 
-    MIN_MONTO = 0
+    MIN_MONTO = 400000
     MAX_MONTO = 3000000
 
     if acumulado < MIN_MONTO or acumulado > MAX_MONTO:
@@ -336,8 +336,12 @@ def payment_successful(request):
             email = form_data['email']
             telephone = form_data['telephone']
 
+            # Productos
+            productos = Carrito(request).listado_productos()
+            productos_list = "\n".join([f"{item['name']} \n Cantidad: {item['quantity']} \n Precio: {item['price']}" for item in productos])
+
             # Enviar correo al cliente
-            customer_message = f"Gracias por tu compra, {first_name} {last_name}.\nTu pedido ha sido recibido y está en proceso."
+            customer_message = f"Gracias por tu compra, {first_name} {last_name}.\nTu pedido ha sido recibido y está en proceso.\nProductos comprados:\n{productos_list}"
             send_mail(
                 'Confirmación de Compra',
                 customer_message,
@@ -347,8 +351,6 @@ def payment_successful(request):
             )
 
             # Enviar correo al vendedor
-            productos = Carrito(request).listado_productos()
-            productos_list = "\n".join([f"{item['name']} \n Cantidad: {item['quantity']}" for item in productos])
             seller_message = f"Nombres: {first_name}\nApellidos: {last_name}\nDocumento de identidad: {cc}\nCiudad: {city}\nDirección: {address}\nCorreo electrónico: {email}\nTeléfono: {telephone}\n\nProductos:\n{productos_list}"
 
             send_mail(
