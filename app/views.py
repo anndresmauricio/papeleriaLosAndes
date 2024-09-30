@@ -111,6 +111,10 @@ def confirm_email(request, user_id):
     return redirect('index')
 
 
+def privacy_policy(request):
+    return render(request, 'privacy_policy.html')
+
+
 def signout(request):
     logout(request)
     return redirect('index')
