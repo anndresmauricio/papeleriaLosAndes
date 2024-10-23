@@ -1,14 +1,11 @@
 from django.contrib import admin
-from import_export import resources
 from import_export.admin import ImportExportModelAdmin
+from .resources import ProductResource
 from .models import Product
 
 # Register your models here.
-class AutorResource(resources.ModelResource):
-    class Meta:
-        model = Product
-class ProductAdmin(ImportExportModelAdmin):
+class ProductAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     readonly_fields = ("created",)
-    resource_class = AutorResource
+    resource_class = ProductResource
 
 admin.site.register(Product, ProductAdmin)
