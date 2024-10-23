@@ -23,5 +23,10 @@
       "src": "/(.*)",
       "dest": "firstapp/wsgi.py"
     }
-  ]
+  ],
+  "functions": {
+    "firstapp/wsgi.py": {
+      "maxDuration": 300
+    }
+  }
 }
