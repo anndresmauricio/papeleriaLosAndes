@@ -22,6 +22,18 @@
     {
       "src": "/(.*)",
       "dest": "firstapp/wsgi.py"
+    },
+    {
+      "functions": {
+        "api/test.js": {
+          "memory": 3009,
+          "maxDuration": 300
+        },
+        "api/*.js": {
+          "memory": 3009,
+          "maxDuration": 300
+        }
+      }
     }
   ]
 }
