@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load socialaccount %}
+
+{% block content %}
+<div class="signup-container">
+    <h1 class="text-center" style="color: #023e8a;"><strong>Registro</strong></h1>
+    {% if error %}
+    <p class="error-message">{{ error }}</p>
+    {% endif %}
+    <form action="/signup/" method="POST" class="signup-form">
+        {% csrf_token %}
+        <div class="form-group" style="margin-top: 10px;">
+            <label for="id_username" class="col-form-label mr-2">Usuario:</label>
+            <input type="text" id="id_username" name="username" class="form-control">
+        </div>
+        <div class="form-group" style="margin-top: 10px;">
+            <label for="id_email" class="col-form-label mr-2">Correo Electrónico:</label>
+            <input type="email" id="id_email" name="email" class="form-control">
+        </div>
+        <div class="form-group" style="margin-top: 10px;">
+            <label for="id_password1" class="col-form-label mr-2">Contraseña:</label>
+            <input type="password" id="id_password1" name="password1" class="form-control">
+        </div>
+        <div class="form-group" style="margin-top: 10px;">
+            <label for="id_password2" class="col-form-label mr-2">Confirmar contraseña:</label>
+            <input type="password" id="id_password2" name="password2" class="form-control">
+        </div>
+        <div class="form-group" style="margin-top: 10px;">
+            <input type="checkbox" id="id_data_protection" name="data_protection" required>
+            <label for="id_data_protection" class="col-form-label mr-2">
+                Acepto la <a href="/privacy-policy" target="_blank">política de tratamiento de datos</a>
+            </label>
+        </div>
+
+        <div style="margin-top: 20px;" class="boton-signup">
+            <button type="submit" class="btn btn-primary btn-bloc custom-btn">Crear usuario</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

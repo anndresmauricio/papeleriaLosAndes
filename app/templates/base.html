@@ -1,0 +1,82 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Papelería Los Andes</title>
+    <!-- Enlaces a Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link type="text/css" href='{% static "css/styles.css"%}' rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="icon" type="image/jpg" href='{% static "images/logo.jpeg"%}'>
+</head>
+
+<body>
+
+<header class="p-3 text-bg-red">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <!-- Logo de la página -->
+            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                <img src='{% static "images/logo.jpeg"%}' alt=" " width="72" height="44" style="border-radius: 10px;">
+            </a>
+            <!-- Elementos de la barra de navegación -->
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li><a href="/" class="nav-link px-2 text-white">Inicio</a></li>
+                {% if user.is_superuser %}
+                <li><a href="/admin" class="nav-link px-2 text-white">Admin</a></li>
+                {% endif %}
+                <li>
+                    {% if is_vendedor or user.is_superuser %}
+                    <a href="/vendedor_dashboard" class="nav-link px-2 text-white">Almacén</a>
+                    {% endif %}
+                </li>
+                <li><a href="/us" class="nav-link px-2 text-white">Nosotros</a></li>
+                <li><a href="/operation" class="nav-link px-2 text-white">Operación</a></li>
+                <li><a href="/brand" class="nav-link px-2 text-white">Marcas</a></li>
+                <li><a href="/product" class="nav-link px-2 text-white">Productos</a></li>
+                <li><a href="/help" class="nav-link px-2 text-white">Solicitudes</a></li>
+                <li><a href="/contact" class="nav-link px-2 text-white">Contáctenos</a></li>
+
+            </ul>
+            <!-- Inicio de Sesión o Registro -->
+            <div class="text-end">
+                <a href="/cart" class="btn btn-init me-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                         class="bi bi-cart-fill" viewBox="0 0 16 16">
+                        <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+                    </svg>
+                    Carro
+                </a>
+                {% if user.is_authenticated %}
+                {% if user.is_superuser %}
+                <a href="/crear-vendedor" class="btn btn-init me-2">Crear Vendedor</a>
+                {% endif %}
+                <span class="me-2 text-light">Bienvenido, {{ user.username }}</span>
+                <a href="/logout" class="btn btn-init">Salir</a>
+                {% else %}
+                <a href="/signin" class="btn btn-outline-light me-2">Iniciar Sesión</a>
+                <a href="/signup" class="btn btn-init">Registrate</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</header>
+
+{% block content %}
+{% endblock %}
+
+<!-- Enlaces a Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<!-- Script carousel -->
+<script src="{% static 'js/carousel.js' %}"></script>
+</body>
+</html>

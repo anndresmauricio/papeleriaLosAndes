@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load socialaccount %}
+
+{% block content %}
+<div class="signin-container">
+    <h1 class="text-center" style="color: #023e8a;"><strong>Iniciar Sesión</strong></h1>
+    {% if error %}
+    <p class="error-message">{{ error }}</p>
+    {% endif %}
+    <form action="/signin/" method="POST" class="signin-form">
+        {% csrf_token %}
+        <div class="form-group" style="margin-top: 10px;">
+            <label for="id_username_or_email" class="col-form-label mr-2">Usuario o Correo Electrónico:</label>
+            <input type="text" id="id_username_or_email" name="username_or_email" class="form-control">
+        </div>
+        <div class="form-group" style="margin-top: 10px;">
+            <label for="id_password" class="col-form-label mr-2">Contraseña:</label>
+            <input type="password" id="id_password" name="password" class="form-control">
+        </div>
+        <div style="margin-top: 20px; font-size: 0.9em;">
+            <p><a href="{% url 'password_reset' %}">¿Olvidaste tu contraseña?</a></p>
+        </div>
+        <div style="margin-top: 20px;" class="boton-signin">
+            <button type="submit" class="btn btn-primary btn-block custom-btn">Ingresar</button>
+        </div>
+    </form>
+
+    <div style="margin-top: 30px; font-size: 0.9em;">
+        <p>¿No tienes una cuenta? <a href="/signup">Crea tu cuenta</a></p>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .toggle-content {
+        display: none;
+        /* Oculta el contenido inicialmente */
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="alert alert-light" role="alert">
+        <div class="justified-text" style="max-width: 1100px; margin: 0 auto; padding: 0 20px;">
+            <h1 class="text-center toggle-header" data-target="papeleria-content" style="color: #023e8a;">
+                <span class="arrow-icon"></span> <strong>Papelería, útiles para oficina</strong>
+            </h1>
+            <div id="papeleria-content" class="text-center toggle-content">
+                <img src='{% static "images/papeleria.JPG"%}' style="height: 500px;" alt="...">
+            </div>
+            <hr>
+            <h1 class="text-center toggle-header" data-target="aseo-content" style="color: #023e8a;">
+                <span class="arrow-icon"></span> <strong>Aseo</strong>
+            </h1>
+            <div id="aseo-content" class="text-center toggle-content">
+                <img src='{% static "images/aseo.JPG"%}' style="height: 400px;" alt="...">
+            </div>
+            <hr>
+            <h1 class="text-center toggle-header" data-target="cafe-content" style="color: #023e8a;">
+                <span class="arrow-icon"></span> <strong>Cafetería</strong>
+            </h1>
+            <div id="cafe-content" class="text-center toggle-content">
+                <img src='{% static "images/cafe.JPG"%}' style="height: 500px;" alt="...">
+            </div>
+            <hr>
+            <h1 class="text-center toggle-header" data-target="toner-content" style="color: #023e8a;">
+                <span class="arrow-icon"></span> <strong>Tóner y Tintas Para Computador </strong>
+            </h1>
+            <div id="toner-content" class="text-center toggle-content">
+                <img src='{% static "images/toner.JPG"%}' style="height: 300px;" alt="...">
+            </div>
+            <hr>
+            <h1 class="text-center toggle-header" data-target="muebles-content" style="color: #023e8a;">
+                <span class="arrow-icon"></span> <strong>Muebles</strong>
+            </h1>
+            <div id="muebles-content" class="text-center toggle-content">
+                <img src='{% static "images/muebles.JPG"%}' style="height: 200px;" alt="...">
+            </div>
+            <hr>
+            <h1 class="text-center toggle-header" data-target="impresos-content" style="color: #023e8a;">
+                <span class="arrow-icon"></span> <strong>Impresos y Material POP</strong>
+            </h1>
+            <div id="impresos-content" class="text-center toggle-content">
+                <img src='{% static "images/impresos.JPG"%}' style="height: 300px;" alt="...">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const headers = document.querySelectorAll('.toggle-header');
+        headers.forEach(header => {
+            header.addEventListener('click', function () {
+                const targetId = this.getAttribute('data-target');
+                const targetElement = document.getElementById(targetId);
+                if (targetElement.style.display === 'none' || targetElement.style.display === '') {
+                    targetElement.style.display = 'block';
+                } else {
+                    targetElement.style.display = 'none';
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}
