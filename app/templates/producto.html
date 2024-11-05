@@ -41,10 +41,12 @@
             <div class="card"> <!-- Utilizamos la clase card de Bootstrap -->
                 <div class="text-center">
                     {% if product.imagen %}
-                    <img src="{{ product.imagen.url }}" class="card-img-top" alt="..." style="width: 300px; height: 230px;  object-fit: cover;">
+                    <img src="{{ product.imagen.url }}" class="card-img-top product-image" alt="..."
+                         style="width: 300px; height: 230px; object-fit: cover;" data-bs-toggle="modal" data-bs-target="#imageModal"
+                         data-image="{{ product.imagen.url }}">
                     {% else %}
-                    <img src='{% static "images/IMAGEN-NO-DISPONIBLE.jpg"%}' class="card-img-top" alt="..."
-                         style="width: 300px; height: 230px;">
+                    <img src='{% static "images/IMAGEN-NO-DISPONIBLE.jpg" %}' class="card-img-top" alt="..."
+                         style="width: 300px; height: 230px; object-fit: cover;">
                     {% endif %}
                 </div>
                 <div class="card-body">
@@ -63,10 +65,10 @@
     </div>
 </div>
 
-<!-- Agrega la navegación de paginación -->
-{% if page_obj.has_other_pages %}
+<!-- Paginación -->
 <div class="pagination justify-content-center mt-4">
     <ul class="pagination">
+        {% if page_obj.paginator.num_pages > 1 %}
         {% if page_obj.has_previous %}
         <li class="page-item">
             <a class="page-link" href="?page=1&q={{ request.GET.q }}&categoria={{ request.GET.categoria }}" style="color: black;">&laquo; Primero</a>
@@ -76,9 +78,9 @@
         </li>
         {% endif %}
         <li class="page-item active">
-                <span class="page-link">
-                    Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
-                </span>
+            <span class="page-link">
+                Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+            </span>
         </li>
         {% if page_obj.has_next %}
         <li class="page-item">
@@ -88,8 +90,50 @@
             <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}&q={{ request.GET.q }}&categoria={{ request.GET.categoria }}" style="color: black;">Último &raquo;</a>
         </li>
         {% endif %}
+        {% else %}
+        <li class="page-item active">
+            <span class="page-link">
+                Página 1 de 1
+            </span>
+        </li>
+        {% endif %}
     </ul>
 </div>
-{% endif %}
+
+<!-- Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel">Imagen del Producto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img id="modalImage" src="" alt="Imagen del Producto" class="img-fluid">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Esperar a que el documento esté listo
+    document.addEventListener('DOMContentLoaded', function () {
+        // Función para abrir el modal
+        function openModal(imgSrc) {
+            const modalImage = document.getElementById('modalImage');
+            modalImage.src = imgSrc; // Establecer la fuente de la imagen del modal
+            $('#imageModal').modal('show'); // Mostrar el modal de Bootstrap
+        }
+
+        // Agregar evento a cada imagen de producto
+        const productImages = document.querySelectorAll('.product-image');
+        productImages.forEach(function (image) {
+            image.addEventListener('click', function () {
+                const imgSrc = this.getAttribute('data-image'); // Obtener la URL de la imagen
+                openModal(imgSrc); // Abrir el modal
+            });
+        });
+    });
+</script>
 
 {% endblock %}
