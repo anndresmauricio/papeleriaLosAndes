@@ -1,4 +1,5 @@
 import os
+import tempfile
 from import_export import resources, fields
 from django.core.files import File
 from django.conf import settings
@@ -40,3 +41,17 @@ class ProductResource(resources.ModelResource):
             if os.path.exists(image_path):
                 with open(image_path, 'rb') as f:
                     instance.imagen.save(instance.imagen.name, File(f), save=False)
+
+    def write_to_tmp_storage(self, import_file, **kwargs):
+        """
+        Usa un archivo temporal en disco para manejar los datos importados.
+        """
+        # Crea un archivo temporal
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".tmp") as tmp_file:
+            tmp_file.write(import_file.read())  # Escribe los datos en el archivo temporal
+            tmp_file_path = tmp_file.name  # Guarda la ruta del archivo temporal
+            tmp_file.close()
+
+        # Devuelve la ruta del archivo temporal
+        print(f"Archivo temporal creado en: {tmp_file_path}")
+        return tmp_file_path
