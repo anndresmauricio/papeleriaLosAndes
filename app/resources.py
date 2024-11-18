@@ -1,5 +1,5 @@
 import os
-from io import BytesIO
+import tempfile
 from import_export import resources, fields
 from django.core.files import File
 from django.conf import settings
@@ -44,10 +44,20 @@ class ProductResource(resources.ModelResource):
 
     def write_to_tmp_storage(self, import_file, **kwargs):
         """
-        Guarda los datos en un archivo en memoria para evitar problemas con archivos temporales en producción.
+        Guarda los datos en un archivo temporal sin eliminación automática.
         """
-        # Usa BytesIO para manejar el archivo en memoria
-        tmp_file = BytesIO()
+        # Crea un archivo temporal persistente
+        tmp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".tmp")
         tmp_file.write(import_file.read())
-        tmp_file.seek(0)  # Asegúrate de que el puntero esté al inicio del archivo
-        return tmp_file
+        tmp_file_path = tmp_file.name
+        tmp_file.close()
+
+        return tmp_file_path
+
+    def after_import(self, dataset, result, using_transactions, dry_run, **kwargs):
+        """
+        Elimina el archivo temporal después de que termine la importación.
+        """
+        import os
+        if hasattr(self, 'tmp_file_path') and os.path.exists(self.tmp_file_path):
+            os.remove(self.tmp_file_path)
