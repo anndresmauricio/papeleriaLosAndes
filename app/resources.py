@@ -44,20 +44,15 @@ class ProductResource(resources.ModelResource):
 
     def write_to_tmp_storage(self, import_file, **kwargs):
         """
-        Guarda los datos en un archivo temporal sin eliminación automática.
+        Guarda los datos en una carpeta específica del proyecto.
         """
-        # Crea un archivo temporal persistente
-        tmp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".tmp")
+        temp_dir = os.path.join(settings.BASE_DIR, "temp")
+        os.makedirs(temp_dir, exist_ok=True)
+
+        # Crea un archivo temporal en la carpeta "temp"
+        tmp_file = tempfile.NamedTemporaryFile(dir=temp_dir, delete=False, suffix=".tmp")
         tmp_file.write(import_file.read())
         tmp_file_path = tmp_file.name
         tmp_file.close()
 
         return tmp_file_path
-
-    def after_import(self, dataset, result, using_transactions, dry_run, **kwargs):
-        """
-        Elimina el archivo temporal después de que termine la importación.
-        """
-        import os
-        if hasattr(self, 'tmp_file_path') and os.path.exists(self.tmp_file_path):
-            os.remove(self.tmp_file_path)
