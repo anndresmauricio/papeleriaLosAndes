@@ -28,7 +28,14 @@ SECRET_KEY = os.environ.get('SECRET_KEY', default='or-$%qlqe4y=pii46q0&pcmhj_35=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.vercel.app', '.now.sh', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = [
+    '.vercel.app',
+    '.now.sh',
+    '127.0.0.1',
+    'localhost',
+    'www.papelerialosandes.com.co',
+    'papelerialosandes.com.co',
+]
 
 # Application definition
 
