@@ -187,10 +187,10 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.hostinger.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'bodega@papelerialosandes.com'
-EMAIL_HOST_PASSWORD = 'Bod!2024%'
+EMAIL_HOST_USER = 'bodega@papelerialosandes.com.co'
+EMAIL_HOST_PASSWORD = 'Store2025!'
 
-DEFAULT_FROM_EMAIL = 'bodega@papelerialosandes.com'
+DEFAULT_FROM_EMAIL = 'bodega@papelerialosandes.com.co'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

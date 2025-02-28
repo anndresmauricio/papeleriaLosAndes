@@ -215,10 +215,10 @@ def limpiar_carrito(request):
 def ayuda(request):
 
     subject_email_map = {
-        'Solicitud de cotización': 'ventas-1@papelerialosandes.com',
-        'Estado del pedido, facturación o devoluciones': 'bodega@papelerialosandes.com',
-        'Sugerencias, reclamos o pagos': 'asistente.administrativo@papelerialosandes.com',
-        'Otro': 'asistente.administrativo@papelerialosandes.com',
+        'Solicitud de cotización': 'ventas-1@papelerialosandes.com.co',
+        'Estado del pedido, facturación o devoluciones': 'bodega@papelerialosandes.com.co',
+        'Sugerencias, reclamos o pagos': 'asistente.administrativo@papelerialosandes.com.co',
+        'Otro': 'asistente.administrativo@papelerialosandes.com.co',
     }
 
     if request.method == 'POST':
