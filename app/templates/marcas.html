@@ -6,52 +6,68 @@
     .toggle-content {
         display: none;
         /* Oculta el contenido inicialmente */
+        transition: all 0.3s ease;
+    }
+
+    .toggle-header {
+        cursor: pointer;
     }
 </style>
 
 <div class="container mt-5">
     <div class="alert alert-light" role="alert">
-        <div class="justified-text" style="max-width: 1100px; margin: 0 auto; padding: 0 20px;">
+        <div class="justified-text" style="max-width: 100%; margin: 0 auto; padding: 0 20px;">
+            <!-- Sección Papelería -->
             <h1 class="text-center toggle-header" data-target="papeleria-content" style="color: #023e8a;">
                 <span class="arrow-icon"></span> <strong>Papelería, útiles para oficina</strong>
             </h1>
             <div id="papeleria-content" class="text-center toggle-content">
-                <img src='{% static "images/papeleria.JPG"%}' style="height: 500px;" alt="...">
+                <img src='{% static "images/papeleria.JPG"%}' class="img-fluid" alt="Papelería">
             </div>
             <hr>
+
+            <!-- Sección Aseo -->
             <h1 class="text-center toggle-header" data-target="aseo-content" style="color: #023e8a;">
                 <span class="arrow-icon"></span> <strong>Aseo</strong>
             </h1>
             <div id="aseo-content" class="text-center toggle-content">
-                <img src='{% static "images/aseo.JPG"%}' style="height: 400px;" alt="...">
+                <img src='{% static "images/aseo.JPG"%}' class="img-fluid" alt="Aseo">
             </div>
             <hr>
+
+            <!-- Sección Cafetería -->
             <h1 class="text-center toggle-header" data-target="cafe-content" style="color: #023e8a;">
                 <span class="arrow-icon"></span> <strong>Cafetería</strong>
             </h1>
             <div id="cafe-content" class="text-center toggle-content">
-                <img src='{% static "images/cafe.JPG"%}' style="height: 500px;" alt="...">
+                <img src='{% static "images/cafe.JPG"%}' class="img-fluid" alt="Cafetería">
             </div>
             <hr>
+
+            <!-- Sección Tóner y Tintas -->
             <h1 class="text-center toggle-header" data-target="toner-content" style="color: #023e8a;">
                 <span class="arrow-icon"></span> <strong>Tóner y Tintas Para Computador </strong>
             </h1>
             <div id="toner-content" class="text-center toggle-content">
-                <img src='{% static "images/toner.JPG"%}' style="height: 300px;" alt="...">
+                <img src='{% static "images/toner.JPG"%}' class="img-fluid" alt="Tóner">
             </div>
             <hr>
+
+            <!-- Sección Muebles -->
             <h1 class="text-center toggle-header" data-target="muebles-content" style="color: #023e8a;">
                 <span class="arrow-icon"></span> <strong>Muebles</strong>
             </h1>
             <div id="muebles-content" class="text-center toggle-content">
-                <img src='{% static "images/muebles.JPG"%}' style="height: 200px;" alt="...">
+                <img src='{% static "images/muebles.JPG"%}' class="img-fluid" alt="Muebles">
             </div>
             <hr>
+
+            <!-- Sección Impresos y Material POP -->
             <h1 class="text-center toggle-header" data-target="impresos-content" style="color: #023e8a;">
                 <span class="arrow-icon"></span> <strong>Impresos y Material POP</strong>
             </h1>
             <div id="impresos-content" class="text-center toggle-content">
-                <img src='{% static "images/impresos.JPG"%}' style="height: 300px;" alt="...">
+                <img src='{% static "images/impresos.JPG"%}' class="img-fluid" alt="Impresos y Material POP">
             </div>
         </div>
     </div>
@@ -73,4 +89,5 @@
         });
     });
 </script>
+
 {% endblock %}
