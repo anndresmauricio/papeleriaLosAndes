@@ -344,10 +344,10 @@ def payment_successful(request):
             productos = Carrito(request).listado_productos()
             productos_list = "\n".join([f"{item['name']} \n Cantidad: {item['quantity']} \n Precio: {item['price']}" for item in productos])
 
-            # Enviar correo al cliente
+            # Enviar correo de confirmación al cliente solo una vez
             customer_message = f"Gracias por tu compra, {first_name} {last_name}.\nTu pedido ha sido recibido y está en proceso.\nProductos comprados:\n{productos_list}"
             send_mail(
-                'Confirmación de Compra',
+                f'Confirmación de Compra - ID: {order_id}',
                 customer_message,
                 settings.EMAIL_HOST_USER,
                 [email],
@@ -365,6 +365,7 @@ def payment_successful(request):
                 fail_silently=False,
             )
 
+            # Limpiar carrito después de enviar los correos
             carrito = Carrito(request)
             carrito.limpiar()
 

@@ -3,16 +3,34 @@
 
 {% block content %}
 <div class="container mt-5">
-    <div class="alert alert-light" role="alert">
+    <div class="alert alert-success" role="alert">
         <div class="text-center">
-            <h1 style="color: #023e8a;">Pago del producto completado </h1>
+            <h1 class="mb-4" style="color: #023e8a;">
+                <i class="fas fa-check-circle" style="color: green;"></i> ¡Compra realizada con éxito!
+            </h1>
+            <p style="font-size: 18px; color: #333;">Tu pago ha sido procesado correctamente. ¡Gracias por tu compra!</p>
             <hr>
-            <div style="margin-top: 20px; line-height: 35px;" class="btn btn-success btn-block custom-btn">
-                <a href="/product" class="nav-link px-2 text-white">Seguir comprando</a>
+
+            <!-- Resumen de la compra -->
+            <div class="alert alert-light" role="alert">
+                <h4><strong>Resumen del pedido</strong></h4>
+                <p><strong>Total de la compra:</strong> ${{ total_carrito|floatformat:0 }}</p>
             </div>
-            <div style="margin-top: 20px; line-height: 35px;" class="btn btn-primary btn-block custom-btn">
-                <a href="/" class="nav-link px-2 text-white">Volver al inicio</a>
+
+            <!-- Botones con opciones claras -->
+            <div class="row mt-4">
+                <div class="col-md-6 mb-3">
+                    <a href="/product" class="btn btn-success btn-lg btn-block custom-btn">
+                        <i class="fas fa-shopping-cart"></i> Seguir comprando
+                    </a>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <a href="/" class="btn btn-primary btn-lg btn-block custom-btn">
+                        <i class="fas fa-home"></i> Volver al inicio
+                    </a>
+                </div>
             </div>
+
         </div>
     </div>
 </div>
