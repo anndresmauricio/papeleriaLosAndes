@@ -22,76 +22,79 @@
     </div>
     {% endif %}
     <div class="alert alert-primary" role="alert">
-        <table class="table table-bordered">
-            <thead>
-            <tr>
-                <th scope="row" colspan="6" class="text-center" style="color: #023e8a;"><strong>CARRITO DE COMPRAS</strong></th>
-            </tr>
-            <tr>
-                <th scope="col">NOMBRE</th>
-                <th scope="col">PRECIO</th>
-                <th scope="col">IVA</th>
-                <th scope="col">PRECIO CON IVA</th>
-                <th scope="col">CANTIDAD</th>
-                <th scope="col"> </th>
-            </tr>
-            </thead>
-            <tbody>
-            {% if request.session.carrito.items %}
-            {% for key, value in request.session.carrito.items %}
-            <tr>
-                <td>{{ value.articulo }}</td>
-                <td>$ {{ value.precio|floatformat:0 }}</td>
-                <td> 19%</td>
-                <td>$ {{ value.acumulado|floatformat:0 }}</td>
-                <td>
-                    <form action="{% url 'update_quantity' value.producto_id %}" method="POST">
-                        {% csrf_token %}
-                        <input type="number" name="cantidad" value="{{ value.cantidad }}" min="1" style="width: 50px;"
-                               onchange="this.form.submit()"/>
-                    </form>
-                </td>
-                <td>
-                    <a href="{% url 'add' value.producto_id %}" class="badge btn btn-dark badge-dark">+</a>
-                    <a href="{% url 'rest' value.producto_id %}" class="badge btn btn-dark badge-dark">-</a>
-                    <a href="{% url 'delete' value.producto_id %}" class="badge btn btn-dark badge-dark">Eliminar</a>
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="6">
-                    <div class="alert alert-danger text-center"> Sin Productos</div>
-                </td>
-            </tr>
-            {% endfor %}
-            {% else %}
-            <tr>
-                <td colspan="6">
-                    <div class="alert alert-danger text-center"> Sin Productos</div>
-                </td>
-            </tr>
-            {% endif %}
-            <tr>
-                <th scope="row">Total:</th>
-                <td colspan="6">$ {{ total_carrito|floatformat:0 }}</td>
-            </tr>
-            <tr>
-                <th scope="row" colspan="6" class="text-center" style="color: #023e8a;"><strong>VALOR MÍNIMO DE COMPRA</strong></th>
-            </tr>
-            <tr>
-                <td colspan="6" class="text-center">
-                    <img src='{% static "images/despacho.jpg"%}' style="height: 170px;" alt="...">
-                </td>
-            </tr>
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th scope="row" colspan="6" class="text-center" style="color: #023e8a;"><strong>CARRITO DE COMPRAS</strong></th>
+                </tr>
+                <tr>
+                    <th scope="col">NOMBRE</th>
+                    <th scope="col">PRECIO</th>
+                    <th scope="col">IVA</th>
+                    <th scope="col">PRECIO CON IVA</th>
+                    <th scope="col">CANTIDAD</th>
+                    <th scope="col"> </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% if request.session.carrito.items %}
+                {% for key, value in request.session.carrito.items %}
+                <tr>
+                    <td>{{ value.articulo }}</td>
+                    <td>$ {{ value.precio|floatformat:0 }}</td>
+                    <td> 19%</td>
+                    <td>$ {{ value.acumulado|floatformat:0 }}</td>
+                    <td>
+                        <form action="{% url 'update_quantity' value.producto_id %}" method="POST">
+                            {% csrf_token %}
+                            <input type="number" name="cantidad" value="{{ value.cantidad }}" min="1" style="width: 50px;"
+                                   onchange="this.form.submit()"/>
+                        </form>
+                    </td>
+                    <td>
+                        <a href="{% url 'add' value.producto_id %}" class="badge btn btn-dark badge-dark">+</a>
+                        <a href="{% url 'rest' value.producto_id %}" class="badge btn btn-dark badge-dark">-</a>
+                        <a href="{% url 'delete' value.producto_id %}" class="badge btn btn-dark badge-dark">Eliminar</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6">
+                        <div class="alert alert-danger text-center"> Sin Productos</div>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="6">
+                        <div class="alert alert-danger text-center"> Sin Productos</div>
+                    </td>
+                </tr>
+                {% endif %}
+                <tr>
+                    <th scope="row">Total:</th>
+                    <td colspan="6">$ {{ total_carrito|floatformat:0 }}</td>
+                </tr>
+                <tr>
+                    <th scope="row" colspan="6" class="text-center" style="color: #023e8a;"><strong>VALOR MÍNIMO DE COMPRA</strong></th>
+                </tr>
+                <tr>
+                    <td colspan="6" class="text-center">
+                        <img src='{% static "images/despacho.jpg"%}' class="img-fluid" alt="...">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
         <hr>
     </div>
     <div class="row text-center">
-        <div class="col-6"><a href="{% url 'clean' %}" class="btn btn-danger custom-btn" style="line-height: 35px;">Limpiar</a>
+        <div class="col-12 col-md-6 mb-3">
+            <a href="{% url 'clean' %}" class="btn btn-danger custom-btn" style="line-height: 35px; width: 100%;">Limpiar</a>
         </div>
-        <div class="col-6">
-            <a href="{% url 'process_payment' %}" class="btn btn-success custom-btn" style="line-height: 35px;">Comprar</a>
+        <div class="col-12 col-md-6 mb-3">
+            <a href="{% url 'process_payment' %}" class="btn btn-success custom-btn" style="line-height: 35px; width: 100%;">Comprar</a>
         </div>
     </div>
 </div>
