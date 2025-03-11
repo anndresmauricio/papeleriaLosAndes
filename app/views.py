@@ -254,7 +254,7 @@ def process_payment(request):
     carrito = Carrito(request)
     acumulado = carrito.get_total_acumulado()
 
-    MIN_MONTO = 100
+    MIN_MONTO = 400000
     MAX_MONTO = 3000000
 
     if acumulado < MIN_MONTO or acumulado > MAX_MONTO:
