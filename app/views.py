@@ -41,7 +41,7 @@ def index(request):
         productos_random = sample(list(productos), 6) if productos.count() >= 6 else productos
     except OperationalError:
         productos_random = []
-    return render(request, 'index.html', {'productos': productos_random})
+    return render(request, 'index.html', {'productos_random': productos_random})
 
 def ping(request):
     return HttpResponse("pong", status=200)
