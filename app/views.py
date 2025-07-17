@@ -1,11 +1,12 @@
 from random import sample
 import re
 from django.db.models import Count
+from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate, get_backends
-from django.db import IntegrityError
+from django.db import IntegrityError, OperationalError
 from .carrito import Carrito
 from .forms import ProductForm, CheckoutForm
 from .models import Product
@@ -34,12 +35,16 @@ def is_vendedor(request):
         'is_vendedor': request.user.groups.filter(name='Vendedor').exists()
     }
 
-# Create your views here.
 def index(request):
-    productos = Product.objects.all()
-    productos_random = sample(list(productos), 6)
-    return render(request, 'index.html', {'productos_random': productos_random})
+    try:
+        productos = Product.objects.all()
+        productos_random = sample(list(productos), 6) if productos.count() >= 6 else productos
+    except OperationalError:
+        productos_random = []
+    return render(request, 'index.html', {'productos': productos_random})
 
+def ping(request):
+    return HttpResponse("pong", status=200)
 
 def signup(request):
     if request.method == 'GET':

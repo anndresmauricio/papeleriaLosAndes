@@ -22,6 +22,8 @@ from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
+    path('', views.index, name='index'),
+    path('ping/', views.ping, name='ping'),
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
     path('signup/', views.signup, name='signup'),
